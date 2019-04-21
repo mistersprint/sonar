@@ -1,0 +1,5 @@
+- name: install sonar and artifactory
+  hosts: webservers
+  roles:
+  - sonar
+  - jdk

@@ -1,0 +1,63 @@
+---
+
+- name: Installing JAVA and MYSQL
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: '{{ packages_add }}'
+  become: yes
+
+
+- name: download sonarqube 7.7
+  get_url:
+    url: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-7.7.zip
+    dest: /opt/
+    owner: ubuntu
+    mode: 0755
+  become: yes
+
+
+- name: unarchive sonarqube
+  unarchive:
+    src: /opt/sonarqube-7.7.zip
+    dest: /opt/
+    owner: ubuntu
+    remote_src: yes
+  become: yes
+
+
+- name: download artifactory
+  get_url:
+    url: https://bintray.com/jfrog/artifactory/download_file?file_path=jfrog-artifactory-oss-6.9.1.zip
+    dest: /opt/jfrog-artifactory-oss-6.9.1.zip
+    owner: ubuntu
+    remote_src: yes
+  become: yes
+
+
+- name: unarchive sonarqube
+  unarchive:
+    src: /opt/jfrog-artifactory-oss-6.9.1.zip
+    dest: /opt/
+    owner: ubuntu
+    remote_src: yes
+  become: yes
+
+
+#- name: Installing Artifacrory Service
+#  shell: sh /opt/artifactory-oss-6.9.1/bin/installService.sh
+#  ignore_errors: yes
+#  become: yes
+
+- name: Changing Permission
+  file:
+    path: /opt/artifactory-oss-6.9.1
+    owner: ubuntu
+    mode: 0755
+  become: yes
+
+- name: Start Aritifacory service
+  shell: sudo /opt/artifactory-oss-6.9.1/bin/artifactoryctl stop
+
+- name: start sonar
+  shell: /opt/sonarqube-7.7/bin/linux-x86-64/sonar.sh start    
