@@ -1,5 +1,4 @@
 - name: install sonar and artifactory
-  hosts: webservers
+  hosts: node1
   roles:
   - sonar
-  - jdk

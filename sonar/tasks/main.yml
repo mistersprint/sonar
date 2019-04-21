@@ -2,9 +2,9 @@
 
 - name: Installing JAVA and MYSQL
   apt:
-    name: "{{ item }}"
+    name: "{{ list_of_packages }}"
     state: present
-  with_items: '{{ packages_add }}'
+  loop: '{{ packages_add }}'
   become: yes
 
 
@@ -60,4 +60,4 @@
   shell: sudo /opt/artifactory-oss-6.9.1/bin/artifactoryctl stop
 
 - name: start sonar
-  shell: /opt/sonarqube-7.7/bin/linux-x86-64/sonar.sh start    
+  shell: /opt/sonarqube-7.7/bin/linux-x86-64/sonar.sh start
