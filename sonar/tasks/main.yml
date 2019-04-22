@@ -2,9 +2,9 @@
 
 - name: Installing JAVA and MYSQL
   apt:
-    name: "{{ list_of_packages }}"
+    name: "{{ item }}"
     state: present
-  loop: '{{ packages_add }}'
+  with_items: '{{ packages_add }}'
   become: yes
 
 
